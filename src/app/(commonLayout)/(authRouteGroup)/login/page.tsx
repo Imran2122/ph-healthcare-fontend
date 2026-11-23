@@ -1,12 +1,14 @@
-import LoginForm from '@/components/modules/Auth/LoginForm'
-import React from 'react'
+import LoginForm from "@/components/modules/Auth/LoginForm";
+import React from "react";
 
-const loginPage = () => {
-  return (
-    <div>
-      <LoginForm/>
-    </div>
-  )
+interface LoginParams {
+  searchParams: Promise<{ redirect?: string }>;
 }
 
-export default loginPage
+const loginPage = async ({ searchParams }: LoginParams) => {
+  const params = await searchParams;
+  const redirectPath = params.redirect;
+  return <LoginForm redirectPath={redirectPath} />;
+};
+
+export default loginPage;

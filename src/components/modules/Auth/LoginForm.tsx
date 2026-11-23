@@ -14,219 +14,46 @@ import {
 } from "@/components/ui/card";
 import { ILoginPayload, ILoginZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
-import { useMutation} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeIcon, EyeOff } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 
-
-// const LoginForm = () => {
-//   const [serverError, setServerError] = useState<string | null>(null);
-
-//   const [showPassword, setShowPassword] = useState(false);
-//   const { mutateAsync, isPending } = useMutation({
-//     mutationFn: (payload: ILoginPayload) => loginAction(payload),
-//   });
-
-//   const form = useForm({
-//     defaultValues: {
-//       email: "",
-//       password: "",
-//     },
-
-//     onSubmit: async ({ value }) => {
-//       setServerError(null);
-//       try {
-//         const result = (await mutateAsync(value)) as any;
-//         if (!result.success) {
-//           setServerError(result.message || "login Failed");
-//         }
-//       } catch (error: any) {
-//         console.log(`Login Failed ${error.message}`);
-//         setServerError(`Login Failed :${error.message}`);
-//       }
-//     },
-//   });
-
-//   return (
-//     <Card className="w-full max-w-md mx-auto shadow-md">
-//       <CardHeader className="text-center">
-//         <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
-//         <CardDescription>Please Inter Your Credentails</CardDescription>
-//       </CardHeader>
-
-//       <CardContent>
-//         <form
-//           method="POST"
-//           action="#"
-//           noValidate
-//           onSubmit={(e) => {
-//             e.preventDefault();
-//             e.stopPropagation();
-//             void form.handleSubmit();
-//           }}
-//           className="space-y-4 "
-//         >
-//           <form.Field
-//             name="email"
-//             validators={{ onChange: ILoginZodSchema.shape.email }}
-//           >
-//             {(field) => (
-//               <AppField
-//                 field={field}
-//                 label="email"
-//                 type="email"
-//                 placeholder="Enter Your Email"
-//               ></AppField>
-//             )}
-//           </form.Field>
-
-//           <form.Field
-//             name="password"
-//             validators={{ onChange: ILoginZodSchema.shape.password }}
-//           >
-//             {(field) => (
-//               <AppField
-//                 field={field}
-//                 label="password"
-//                 type={showPassword ? "text" : "password"}
-//                 placeholder="Enter Your Paasword"
-//                 aria-label={showPassword ? "hide Password" : "show password"}
-//                 append={
-//                   <Button
-//                     type="button"
-//                     onClick={() => setShowPassword((value) => !value)}
-//                     variant="ghost"
-//                     size="icon"
-//                   >
-//                     {showPassword ? (
-//                       <EyeOff className="size-4" aria-hidden="true" />
-//                     ) : (
-//                       <Eye className="size-4" aria-hidden="true" />
-//                     )}
-//                   </Button>
-//                 }
-//               ></AppField>
-//             )}
-//           </form.Field>
-
-//           <div className="text-right mat-2">
-//             <Link
-//               className="text-sm text-primary hover:underline underline-offset-4"
-//               href="/forget-password"
-//             >
-//               Forget Password
-//             </Link>
-//           </div>
-
-//           {serverError && (
-//             <Alert variant={"destructive"}>
-//               <AlertDescription>{serverError}</AlertDescription>
-//             </Alert>
-//           )}
-
-//           <form.Subscribe
-//             selector={(s) => [s.canSubmit, s.isSubmitting] as const}
-//           >
-//             {([canSubmit, isSubmitting]) => (
-//               <AppSubmitButton isPending={isSubmitting} disabled={!canSubmit}>
-//                 Login In
-//               </AppSubmitButton>
-//             )}
-//           </form.Subscribe>
-//         </form>
-
-//         <div className="relative my-6">
-//           <div className="absolute inset-0 items-center">
-//             <div className="w-full border-t border-gray-300"></div>
-//             <div className="relative flex justify-center text-sm">
-//               <span className="px-2 bg-white text-gray-300"></span>
-//             </div>
-//           </div>
-
-//           <Button
-//             variant="outline"
-//             className="w-full"
-//             onClick={() => {
-//               const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-//               window.location.href = `${baseUrl}/auth/login/google`;
-//             }}
-//           >
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 48 48"
-//               width="24"
-//               height="24"
-//             >
-//               <path
-//                 fill="#4285F4"
-//                 d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11a9.4 9.4 0 0 1-4.1 6.2v5.1h6.6c3.9-3.6 6.1-8.9 6.1-15Z"
-//               />
-//               <path
-//                 fill="#34A853"
-//                 d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.6-5.1c-1.8 1.2-4.1 2-6.9 2-5.3 0-9.8-3.6-11.4-8.4H5.8v5.3A20 20 0 0 0 24 44Z"
-//               />
-//               <path
-//                 fill="#FBBC05"
-//                 d="M12.6 27.6a12 12 0 0 1 0-7.2v-5.3H5.8a20 20 0 0 0 0 17.8l6.8-5.3Z"
-//               />
-//               <path
-//                 fill="#EA4335"
-//                 d="M24 12.1c3 0 5.7 1 7.8 3.1l5.8-5.8C34.1 6.1 29.5 4 24 4A20 20 0 0 0 5.8 15.1l6.8 5.3c1.6-4.8 6.1-8.3 11.4-8.3Z"
-//               />
-//             </svg>
-//             Sign In With Google{" "}
-//           </Button>
-       
-//         </div>
-//       </CardContent>
-//       <CardFooter className="justify-center border-t pt-4">
-//         <p className="text-sm text-muted-foreground">
-//           Don't have an account?
-//           <Link
-//             href="/register"
-//             className="text-primary font-medium hover:underline underline-offset-4"
-//           >
-//             Sign Up For an Account
-//           </Link>
-//         </p>
-//       </CardFooter>
-//     </Card>
-//   );
-// };
-
+interface LoginFormProps {
+  redirectPath?: string;
+}
 // export default LoginForm;
-const LoginForm = () => {
-    // const queryClient = useQueryClient();
+const LoginForm = ({ redirectPath }:LoginFormProps) => {
+  // const queryClient = useQueryClient();
 
-    const [serverError, setServerError] = useState<string | null>(null);
-    const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
-    const { mutateAsync , isPending} = useMutation({
-        mutationFn : (payload : ILoginPayload) => loginAction(payload),
-    })
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: (payload: ILoginPayload) => loginAction(payload,redirectPath),
+  });
 
-    const form = useForm({
-        defaultValues : {
-            email : "",
-            password : "",
-        },
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
 
-        onSubmit : async ({value}) => {
-            setServerError(null);
-            try {
-                const result = await mutateAsync(value) as any;
+    onSubmit: async ({ value }) => {
+      setServerError(null);
+      try {
+        const result = (await mutateAsync(value)) as any;
 
-                if(!result.success ){
-                    setServerError(result.message || "Login failed");
-                    return ;
-                }
-            } catch (error : any) {
-                console.log(`Login failed: ${error.message}`);
-                setServerError(`Login failed: ${error.message}`);
-            }
+        if (!result.success) {
+          setServerError(result.message || "Login failed");
+          return;
         }
-    })
+      } catch (error: any) {
+        console.log(`Login failed: ${error.message}`);
+        setServerError(`Login failed: ${error.message}`);
+      }
+    },
+  });
   return (
     <Card className="w-full max-w-md mx-auto shadow-md">
       <CardHeader className="text-center">
@@ -277,7 +104,7 @@ const LoginForm = () => {
                 className="cursor-pointer"
                 append={
                   <Button
-                  type="button"
+                    type="button"
                     onClick={() => setShowPassword((value) => !value)}
                     variant="ghost"
                     size="icon"
@@ -312,7 +139,11 @@ const LoginForm = () => {
             selector={(s) => [s.canSubmit, s.isSubmitting] as const}
           >
             {([canSubmit, isSubmitting]) => (
-              <AppSubmitButton isPending={isSubmitting || isPending} pendingLabel="Logging In...." disabled={!canSubmit}>
+              <AppSubmitButton
+                isPending={isSubmitting || isPending}
+                pendingLabel="Logging In...."
+                disabled={!canSubmit}
+              >
                 Log In
               </AppSubmitButton>
             )}
@@ -330,11 +161,15 @@ const LoginForm = () => {
           </div>
         </div>
 
-        <Button variant="outline" className="w-full" onClick={() => {
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => {
             const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
             //TODO redirect path after login in frontend
             window.location.href = `${baseUrl}/auth/login/google`;
-        }}>
+          }}
+        >
           <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
             <path
               fill="currentColor"
@@ -359,17 +194,17 @@ const LoginForm = () => {
 
       <CardFooter className="justify-center border-t pt-4">
         <p className="text-sm text-muted-foreground">
-              Don&apos;t have an account?{" "}
-            <Link
-                href="/register"
-                className="text-primary font-medium hover:underline underline-offset-4"
-            >
-                Sign Up for an account
-            </Link>
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/register"
+            className="text-primary font-medium hover:underline underline-offset-4"
+          >
+            Sign Up for an account
+          </Link>
         </p>
       </CardFooter>
     </Card>
   );
-}
+};
 
-export default LoginForm
+export default LoginForm;
