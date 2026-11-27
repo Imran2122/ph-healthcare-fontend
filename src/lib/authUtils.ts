@@ -31,10 +31,7 @@ export const adminProtectedRoute: RouteConfig = {
   pattern: [/^\/admin\/dashboard/],
   exact: [],
 };
-// export const supperAdminProtectedRoute: RouteConfig = {
-//   pattern: [/^\/supper_admin\/dashboard/],
-//   exact: [],
-// };
+
 
 export const patientProtectedRoutes: RouteConfig = {
   pattern: [/^\/dashboard/],
@@ -77,10 +74,10 @@ export const getDefaultDashboard = (role: UserRole) => {
     return "/admin/dashboard";
   }
   if (role === "PATIENT") {
-    return "dashboard";
+    return "/dashboard";
   }
   if (role === "DOCTOR") {
-    return "doctor/dashboard";
+    return "/doctor/dashboard";
   }
 
   return "/";

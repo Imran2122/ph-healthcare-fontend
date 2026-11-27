@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ChangePasswordPage = () => {
-  return (
-    <div>
-      ChangePasswordPage
-    </div>
-  )
-}
+  return <div>ChangePasswordPage</div>;
+};
 
-export default ChangePasswordPage
+export default ChangePasswordPage;

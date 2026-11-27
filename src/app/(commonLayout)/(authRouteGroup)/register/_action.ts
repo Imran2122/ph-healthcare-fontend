@@ -38,7 +38,7 @@ export const registerAction = async (
     await setTokenCookies("accessToken", accessToken);
     await setTokenCookies("refreshToken", refreshToken);
     await setTokenCookies(
-      "better_auth.session_token",
+      "better-auth.session_token",
       token,
       24 * 60 * 60,
     );

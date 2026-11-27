@@ -46,7 +46,7 @@ export const loginAction = async (
 
     await setTokenCookies("accessToken", accessToken);
     await setTokenCookies("refreshToken", refreshToken);
-    await setTokenCookies("better_auth.session_token", token, 24 * 60 * 60);
+    await setTokenCookies("better-auth.session_token", token, 24 * 60 * 60);
   } catch (error: unknown) {
     console.error("LOGIN ACTION ERROR:", error);
 
